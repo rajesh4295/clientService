@@ -1,0 +1,35 @@
+import "google/protobuf/timestamp.proto";
+
+//syntax = "proto3";
+
+option go_package = "etnasys.com/clientService/protogen/go/plan";
+
+message PlanEnum {
+    enum Status {
+        Active = 0;
+        Inactive = 1;
+        Deleted = 2;
+    }
+    enum Type {
+        Free = 0;
+        Personal = 1;
+        Startup = 2;
+        Growth = 4;
+        Enterprise = 5;
+    }
+}
+
+message Plan {
+    required string id = 1 [ json_name = "id"];
+    required string productId = 2 [ json_name = "productId"];
+    required string name = 3 [ json_name = "name"];
+    optional string description = 4 [ json_name = "description"];
+    required int32 price = 5 [ json_name = "price"];
+    required string currency = 6 [ json_name = "currency"];
+    required PlanEnum.Type type = 7 [ json_name = "type"];
+    required PlanEnum.Status status = 8 [ json_name = "status"];
+    required int32 seats = 9 [ json_name = "seats"];
+    optional google.protobuf.Timestamp createdAt = 10 [ json_name = "createdAt"];
+    optional google.protobuf.Timestamp updatedAt = 11 [ json_name = "updatedAt"];
+    optional google.protobuf.Timestamp deletedAt = 12 [ json_name = "deletedAt"];
+}

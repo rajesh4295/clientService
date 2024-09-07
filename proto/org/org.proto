@@ -1,0 +1,24 @@
+import "google/protobuf/timestamp.proto";
+
+//syntax = "proto3";
+
+option go_package = "etnasys.com/clientService/protogen/go/org";
+
+message OrgEnum {
+    enum Status {
+        Active = 0;
+        Inactive = 1;
+        Deleted = 2;
+    }
+}
+
+message Org {
+    required string id = 1 [ json_name = "id"];
+    required string name = 2 [ json_name = "name"];
+    optional string description = 3 [ json_name = "description"];
+    required string orgId = 4 [ json_name = "orgId"];
+    required OrgEnum.Status status = 5 [ json_name = "status"];
+    optional google.protobuf.Timestamp createdAt = 6 [ json_name = "createdAt"];
+    optional google.protobuf.Timestamp updatedAt = 7 [ json_name = "updatedAt"];
+    optional google.protobuf.Timestamp deletedAt = 8 [ json_name = "deletedAt"];
+}

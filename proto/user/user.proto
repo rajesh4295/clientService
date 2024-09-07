@@ -1,0 +1,100 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+
+
+option go_package = "etnasys.com/clientService/protogen/go/user";
+
+enum UserStatus {
+    UserStatusUknown = 0;
+    active = 1;
+    inactive = 2;
+    deleted = 3;
+}
+enum UserType {
+    UserTypeUknown = 0;
+    user = 1;
+    application = 2;
+}
+enum UserIdp {
+    UserIdpUknown = 0;
+    auth0 = 1;
+    azureAD = 2;
+}
+
+
+message User {
+    string id = 1 [ json_name = "id"];
+    string name = 2 [ json_name = "name"];
+    string email = 3 [ json_name = "email"];
+    string state = 4 [ json_name = "state"];
+    string pin = 5 [ json_name = "pin"];
+    string country = 6 [ json_name = "country"];
+    string avatar = 7 [ json_name = "avatar"];
+    UserType userType = 8 [ json_name = "userType"];
+    string orgId = 9 [ json_name = "orgId"];
+    UserIdp idp = 11 [ json_name = "idp"];
+    string idpUserId = 12 [ json_name = "idpUserId"];
+    string internalUserId = 13 [ json_name = "interalUserId"];
+    UserStatus status = 14 [ json_name = "status"];
+    google.protobuf.Timestamp createdAt = 15 [ json_name = "createdAt"];
+    google.protobuf.Timestamp updatedAt = 16 [ json_name = "updatedAt"];
+    google.protobuf.Timestamp deletedAt = 17 [ json_name = "deletedAt"];
+}
+
+message CreateUserRequest {
+    UserIdp idp = 1 [ json_name = "idp"];
+    string idpUserId = 2 [ json_name = "idpUserId"];
+    string name = 3 [ json_name = "name"];
+    string email = 4 [ json_name = "email"];
+    string state = 5 [ json_name = "state"];
+    string pin = 6 [ json_name = "pin"];
+    string country = 7 [ json_name = "country"];
+    UserType userType = 8 [ json_name = "userType"];
+}
+
+message CreateUserResponse {
+    User user = 1;
+}
+
+message Pagination {
+    int32 page = 1 [ json_name = "page"];
+    int32 limit = 2 [ json_name = "limit"];
+}
+
+message SearchUserRequest {
+    map<string,google.protobuf.Value> query = 1 [ json_name = "query"];
+    Pagination pagination = 2 [ json_name = "pagination"];
+}
+
+message PaginatedUserResponse {
+    repeated User result = 1 [ json_name = "result"]; 
+    Pagination pagination = 2 [ json_name = "pagination"];
+    int32 totalResult = 3 [json_name = "totalResult"];
+}
+
+message UpdateUserRequest {
+    User user = 1;
+}
+
+message UpdateUserResponse {
+    User user = 1;
+}
+
+message IdRequest {
+    string id = 1;
+}
+
+message DeleteUserResponse {
+    bool acknowledged = 1;
+    int64 deletedCount = 2;
+}
+
+service UserService {
+    rpc Create(CreateUserRequest) returns (User);
+    rpc Update(User) returns (User);
+    rpc Get(IdRequest) returns (User);
+    rpc Search(SearchUserRequest) returns (PaginatedUserResponse);
+    rpc Delete(IdRequest) returns (DeleteUserResponse);
+}
